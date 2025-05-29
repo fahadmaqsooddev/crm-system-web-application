@@ -7,6 +7,12 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\LeadController;
 use App\Http\Middleware\Checklogin;
 use App\Mail\LeadAssignedMail;
+use App\Notifications\LeadAssigned;
+use Illuminate\Support\Facades\Notification;
+
+use App\Models\Lead;
+use App\Models\User;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -24,9 +30,3 @@ Route::group(['middleware'=>'auth'],function(){
     
 });
 
-
-Route::get('/test-mail', function () {
-    $lead = App\Models\Lead::first();
-    Mail::to('fahadmaqsood11383@gmail.com')->send(new LeadAssignedMail($lead));
-    return 'Email sent';
-});

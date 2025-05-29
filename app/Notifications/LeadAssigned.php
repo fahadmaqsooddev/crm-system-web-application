@@ -44,7 +44,7 @@ class LeadAssigned extends Notification implements ShouldQueue
             ->line('Name: ' . $this->lead->name)
             ->line('Email: ' . $this->lead->email)
             ->line('Phone: ' . $this->lead->phone)
-            ->action('View Lead', $url)
+            ->action('View Lead', route('leads.show', $this->lead->id))
             ->line('Thank you for using our application!');
     }
 

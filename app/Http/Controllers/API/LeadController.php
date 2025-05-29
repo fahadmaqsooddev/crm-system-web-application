@@ -10,6 +10,9 @@ use App\Http\Resources\LeadResource;
 use App\Http\Requests\LeadRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\LeadAssigned;
+
 
 class LeadController extends Controller
 {
@@ -51,6 +54,11 @@ class LeadController extends Controller
         $this->authorize('create', Lead::class);
         $validated = $request->validated();
         $lead = Lead::create($validated);
+
+        $agent = User::find($lead->assigned_to);
+        if ($agent) {
+            Notification::send($agent, new LeadAssigned($lead));
+        }
         return (new LeadResource($lead))
             ->response()
             ->setStatusCode(201);
@@ -62,7 +70,7 @@ class LeadController extends Controller
      */
     public function show(Lead $lead)
     {
-        $this->authorize('create', Lead::class);
+        $this->authorize('view', $lead);
         return new LeadResource($lead);
     }
 
@@ -74,9 +82,21 @@ class LeadController extends Controller
     {
         $this->authorize('update', $lead);
         $validated = $request->validated();
+        $oldAssignedTo = $lead->assigned_to;
         $lead->update($validated);
+        if (
+            isset($validated['assigned_to']) &&
+            $validated['assigned_to'] != $oldAssignedTo
+        ) {
+            $newAgent = User::find($validated['assigned_to']);
+            if ($newAgent) {
+                Notification::send($newAgent, new LeadAssigned($lead));
+            }
+        }
+
         return new LeadResource($lead);
     }
+
 
     /**
      * Remove the specified resource from storage.

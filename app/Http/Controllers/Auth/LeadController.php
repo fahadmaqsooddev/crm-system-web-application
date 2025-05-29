@@ -94,7 +94,11 @@ class LeadController extends Controller
     public function update(LeadRequest $request, Lead $lead)
     {
         $this->authorize('update', $lead);
+
         $validated = $request->validated();
+
+        $oldAssignedTo = $lead->assigned_to;
+
         $lead->update([
             'name'        => $validated['name'],
             'email'       => $validated['email'],
@@ -104,8 +108,16 @@ class LeadController extends Controller
             'notes'       => $validated['notes'] ?? null,
         ]);
 
+        if ($validated['assigned_to'] && $validated['assigned_to'] != $oldAssignedTo) {
+            $newAgent = User::find($validated['assigned_to']);
+            if ($newAgent) {
+                Notification::send($newAgent, new LeadAssigned($lead));
+            }
+        }
+
         return redirect()->route('leads.index')->with('msg', 'Lead updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.

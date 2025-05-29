@@ -21,7 +21,7 @@ class LeadCreationTest extends TestCase
 
         $leadData = [
             'name' => 'Test Lead',
-            'email' => 'test@gmail.com',
+            'email' => 'test2@gmail.com',
             'phone' => '03176281399',
             'status' => 'new',
             'assigned_to' => $agent->id,

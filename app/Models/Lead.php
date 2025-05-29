@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Lead extends Model
 {
-    use SoftDeletes,Notifiable;
+    use SoftDeletes,Notifiable,HasFactory;
     protected $fillable=['name','email','phone','status','assigned_to','notes'];
 
     public function user(){
