@@ -62,11 +62,11 @@ DB_PASSWORD=
 
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USERNAME=your_email@gmail.com
-MAIL_PASSWORD=your_app_password
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS=your_email@gmail.com
+MAIL_PORT=465
+MAIL_USERNAME=fahadmaqsood957@gmail.com
+MAIL_PASSWORD=bpkcxyuevqgigfmz
+MAIL_ENCRYPTION=ssl
+MAIL_FROM_ADDRESS=fahadmaqsood957@gmail.com
 MAIL_FROM_NAME="${APP_NAME}"
 
 QUEUE_CONNECTION=database
