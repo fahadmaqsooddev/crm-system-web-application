@@ -26,7 +26,7 @@ class LeadRequest extends FormRequest
         return [
             'name'         => 'required|string|max:255',
             'email'        => 'required|email|unique:leads,email,' . $leadId,
-            'phone'        => ['nullable', 'string', 'regex:/^\d+$/', 'min:10', 'max:15'],
+            'phone'        => ['nullable', 'regex:/^\d{11}$/'],
             'status'       => 'required|in:new,contacted,closed',
             'assigned_to'  => 'required|exists:users,id',
             'notes'        => 'nullable|string|max:1000',
